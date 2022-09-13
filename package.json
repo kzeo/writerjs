@@ -20,11 +20,10 @@
     "web-vitals": "^3.0.1"
   },
   "scripts": {
-    "start": "react-scripts start --hot --inline",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "dev": "webpack-dev-server --hot --inline"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

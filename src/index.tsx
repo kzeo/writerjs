@@ -12,7 +12,7 @@ const App = () => {
   const startService = async () => {
     await esbuild.initialize({
       worker: true,
-      wasmURL: '/esbuild.wasm',
+      wasmURL: 'https://unpkg.com/esbuild-wasm/esbuild.wasm',
     })
     ref.current = true
   }
@@ -29,17 +29,18 @@ const App = () => {
       entryPoints: ['index.js'],
       bundle: true,
       write: false,
-      plugins: [unpkgPathPlugin(input), fetchPlugin(input)],
+      plugins: [unpkgPathPlugin(), fetchPlugin(input)],
       define: {
         'process.env.NODE_ENV': '"production"',
         global: 'window',
       },
     })
 
-    // console.log(result)
-
     setCode(result.outputFiles[0].text)
   }
+
+  const html = `
+  <script>${code}</script>`
 
   return (
     <div>
@@ -51,6 +52,7 @@ const App = () => {
         <button onClick={onClick}>Submit</button>
       </div>
       <pre>{code}</pre>
+      <iframe sandbox="allow-scripts" srcDoc={html} />
     </div>
   )
 }
