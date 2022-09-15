@@ -12,16 +12,22 @@
     "@types/node": "^18.7.17",
     "@types/react": "^18.0.19",
     "@types/react-dom": "^18.0.6",
+    "assert": "^2.0.0",
     "axios": "^0.27.2",
     "bulmaswatch": "^0.8.1",
+    "constants-browserify": "^1.0.0",
+    "esbuild": "^0.15.7",
     "esbuild-wasm": "^0.15.7",
+    "fs": "^0.0.1-security",
     "jscodeshift": "0.13.1",
     "localforage": "^1.10.0",
     "monaco-jsx-highlighter": "2.0.4",
+    "os": "^0.1.2",
     "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
+    "service": "^0.1.4",
     "typescript": "^4.8.3",
     "web-vitals": "^3.0.1"
   },
@@ -48,5 +54,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "path-browserify": "^1.0.1"
   }
 }
