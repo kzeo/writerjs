@@ -1,3 +1,4 @@
+import './preview.css'
 import { useRef, useEffect } from 'react'
 
 interface PreviewProps {
@@ -7,6 +8,8 @@ interface PreviewProps {
 const html = `
     <html>
       <head>
+        <style>html {background-color: white;}</style>
+      </head>
         <body>
           <div id='root'></div>
           <script>
@@ -15,13 +18,12 @@ const html = `
                 eval(event.data)
               } catch (err) {
                 const root = document.querySelector('#root')
-                root.innerHTML = '<div style="color: red"><h4>Runtime Error</h4>' + err + '</div>'
+                root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + err + '</div>'
                console.log(err)
               }
             }, false )
           </script>
-        </body>
-      </head>
+        </body>      
     </html>
   `
 
@@ -30,16 +32,20 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
 
   useEffect(() => {
     iframe.current.srcdoc = html
-    iframe.current.contentWindow.postMessage(code, '*')
+    setTimeout(() => {
+      iframe.current.contentWindow.postMessage(code, '*')
+    }, 50)
   }, [code])
 
   return (
-    <iframe
-      title="preview"
-      ref={iframe}
-      sandbox="allow-scripts"
-      srcDoc={html}
-    />
+    <div className="preview-wrapper">
+      <iframe
+        title="preview"
+        ref={iframe}
+        sandbox="allow-scripts"
+        srcDoc={html}
+      />
+    </div>
   )
 }
 
