@@ -5,7 +5,7 @@ import MDEditor from '@uiw/react-md-editor'
 const TextEditor: React.FC = () => {
   const ref = useRef<HTMLDivElement | null>(null)
   const [editing, setEditing] = useState(false)
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState('# Header')
 
   useEffect(() => {
     const listener = (event: MouseEvent) => {
@@ -36,11 +36,7 @@ const TextEditor: React.FC = () => {
   return (
     <div className="text-editor card" onClick={() => setEditing(true)}>
       <div className="card-content">
-        <MDEditor.Markdown
-          source={value}
-          style={{ whiteSpace: 'pre-wrap' }}
-          warpperElement={{ 'data-color-mode': 'dark' }}
-        />
+        <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} />
       </div>
     </div>
   )
