@@ -13,6 +13,7 @@
     "@types/react": "^18.0.19",
     "@types/react-dom": "^18.0.6",
     "@types/react-resizable": "3.0.3",
+    "@uiw/react-md-editor": "3.18.1",
     "assert": "^2.0.0",
     "axios": "^0.27.2",
     "bulmaswatch": "^0.8.1",
@@ -34,7 +35,7 @@
     "web-vitals": "^3.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "GENERATE_SOURCEMAP=false react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
