@@ -50,6 +50,11 @@
   color: #d4d4d4;
 }
 
+.text-editor .wmde-markdown {
+  background-color: #202123;
+  color: #fff;
+}
+
 .text-editor .wmde-markdown-var {
   background-color: #202123;
 }
