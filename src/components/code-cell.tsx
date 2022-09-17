@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import CodeEditor from './code-editor'
 import Preview from './preview'
-import bundle from '../bundler'
+import bundle, { startService } from '../bundler'
 import Resizable from './resizable'
 import { Cell } from '../state'
 import { useActions } from '../hooks/use-actions'
@@ -16,6 +16,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const { updateCell } = useActions()
 
   useEffect(() => {
+    startService()
     const timer = setTimeout(async () => {
       const output = await bundle(cell.content)
       setCode(output.code)
@@ -29,7 +30,13 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
   return (
     <Resizable direction="vertical">
-      <div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
+      <div
+        style={{
+          height: 'calc(100% - 10px)',
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
         <Resizable direction="horizontal">
           <CodeEditor
             initialValue={cell.content}

@@ -1,31 +1,37 @@
 import * as esbuild from 'esbuild-wasm'
 import { unpkgPathPlugin } from './plugins/unpkg-path-plugin'
 import { fetchPlugin } from './plugins/fetch-plugin'
+import { BuildResult } from 'esbuild-wasm'
 
-const bundle = async (rawCode: string) => {
-  try {
-    const result = await esbuild.build({
+let waiting: Promise<void>
+
+export const startService = () => {
+  waiting = esbuild.initialize({
+    worker: false,
+    wasmURL: 'https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm',
+  })
+}
+
+const bundle = async (rawCode: string): Promise<BuildResult> => {
+  await waiting
+  return esbuild
+    .build({
       entryPoints: ['index.js'],
       bundle: true,
       write: false,
-      plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
-      define: {
-        'process.env.NODE_ENV': '"production"',
-        global: 'window',
-      },
     })
-
-    return { code: result.outputFiles[0].text, err: '' }
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('initialize')) {
-      await esbuild.initialize({
-        worker: false,
-        wasmURL: 'https://unpkg.com/esbuild-wasm/esbuild.wasm',
-      })
-    } else {
-      return { code: '', err: error.message }
-    }
-  }
+    .then((result): BuildResult => {
+      return {
+        code: result.outputFiles[0].text,
+        err: '',
+      }
+    })
+    .catch((err) => {
+      return {
+        code: '',
+        err: err.message,
+      }
+    })
 }
 
 export default bundle
