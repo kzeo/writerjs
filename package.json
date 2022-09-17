@@ -23,6 +23,7 @@
     "esbuild": "^0.15.7",
     "esbuild-wasm": "^0.15.7",
     "fs": "^0.0.1-security",
+    "immer": "^9.0.15",
     "jscodeshift": "0.13.1",
     "localforage": "^1.10.0",
     "monaco-jsx-highlighter": "2.0.4",
