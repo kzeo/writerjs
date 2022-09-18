@@ -1,7 +1,4 @@
 import * as esbuild from 'esbuild-wasm'
-import { unpkgPathPlugin } from './plugins/unpkg-path-plugin'
-import { fetchPlugin } from './plugins/fetch-plugin'
-import { BuildResult } from 'esbuild-wasm'
 
 let waiting: Promise<void>
 
@@ -12,7 +9,7 @@ export const startService = () => {
   })
 }
 
-const bundle = async (rawCode: string): Promise<BuildResult> => {
+const bundle = async (rawCode: string) => {
   await waiting
   return esbuild
     .build({
@@ -20,7 +17,7 @@ const bundle = async (rawCode: string): Promise<BuildResult> => {
       bundle: true,
       write: false,
     })
-    .then((result): BuildResult => {
+    .then((result) => {
       return {
         code: result.outputFiles[0].text,
         err: '',
