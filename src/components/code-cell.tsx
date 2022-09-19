@@ -17,22 +17,39 @@ startService()
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const { updateCell, createBundle } = useActions()
   const bundle = useTypedSelector((state) => state.bundles[cell.id])
+  const cumulatedCode = useTypedSelector((state) => {
+    const { data, order } = state.cells
+    const orderedCells = order.map((id) => data[id])
+
+    const cumulatedCode = []
+    for (let c of orderedCells) {
+      if (c.type === 'code') {
+        cumulatedCode.push(c.content)
+      }
+      if (c.id === cell.id) {
+        break
+      }
+    }
+    return cumulatedCode
+  })
+
+  console.log(cumulatedCode)
 
   useEffect(() => {
     if (!bundle) {
-      createBundle(cell.id, cell.content)
+      createBundle(cell.id, cumulatedCode.join('\n'))
       return
     }
 
     const timer = setTimeout(async () => {
-      createBundle(cell.id, cell.content)
+      createBundle(cell.id, cumulatedCode.join('\n'))
     }, 750)
 
     return () => {
       clearTimeout(timer)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cell.content, cell.id, createBundle])
+  }, [cumulatedCode.join('\n'), cell.id, createBundle])
 
   return (
     <Resizable direction="vertical">
