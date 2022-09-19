@@ -7,6 +7,7 @@ import { Cell } from '../state'
 import { useActions } from '../hooks/use-actions'
 import { useTypedSelector } from '../hooks/use-typed-selector'
 import { startService } from '../bundler/index'
+import { useCumulatedCode } from '../hooks/use-cumulated-code'
 
 interface CodeCellProps {
   cell: Cell
@@ -17,39 +18,23 @@ startService()
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const { updateCell, createBundle } = useActions()
   const bundle = useTypedSelector((state) => state.bundles[cell.id])
-  const cumulatedCode = useTypedSelector((state) => {
-    const { data, order } = state.cells
-    const orderedCells = order.map((id) => data[id])
-
-    const cumulatedCode = []
-    for (let c of orderedCells) {
-      if (c.type === 'code') {
-        cumulatedCode.push(c.content)
-      }
-      if (c.id === cell.id) {
-        break
-      }
-    }
-    return cumulatedCode
-  })
-
-  console.log(cumulatedCode)
+  const cumulatedCode = useCumulatedCode(cell.id)
 
   useEffect(() => {
     if (!bundle) {
-      createBundle(cell.id, cumulatedCode.join('\n'))
+      createBundle(cell.id, cumulatedCode)
       return
     }
 
     const timer = setTimeout(async () => {
-      createBundle(cell.id, cumulatedCode.join('\n'))
+      createBundle(cell.id, cumulatedCode)
     }, 750)
 
     return () => {
       clearTimeout(timer)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cumulatedCode.join('\n'), cell.id, createBundle])
+  }, [cumulatedCode, cell.id, createBundle])
 
   return (
     <Resizable direction="vertical">

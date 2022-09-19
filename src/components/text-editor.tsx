@@ -46,6 +46,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ cell }) => {
     <div className="text-editor card" onClick={() => setEditing(true)}>
       <div className="card-content">
         <MDEditor.Markdown
+          className="wmde-markdown"
           source={cell.content || 'Click to edit'}
           style={{ whiteSpace: 'pre-wrap' }}
         />
