@@ -10,6 +10,7 @@ import { startService } from '../bundler/index'
 interface CodeCellProps {
   cell: Cell
 }
+
 startService()
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
@@ -24,8 +25,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     return () => {
       clearTimeout(timer)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cell.content, cell.id])
+  }, [cell.content, cell.id, createBundle])
 
   return (
     <Resizable direction="vertical">

@@ -1,11 +1,13 @@
 import * as esbuild from 'esbuild-wasm'
+import { unpkgPathPlugin } from './plugins/unpkg-path-plugin'
+import { fetchPlugin } from './plugins/fetch-plugin'
 
 let waiting: Promise<void>
 
 export const startService = () => {
   waiting = esbuild.initialize({
     worker: false,
-    wasmURL: 'https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm',
+    wasmURL: 'https://unpkg.com/esbuild-wasm/esbuild.wasm',
   })
 }
 
@@ -16,6 +18,11 @@ const bundle = async (rawCode: string) => {
       entryPoints: ['index.js'],
       bundle: true,
       write: false,
+      plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
+      define: {
+        'process.env.NODE_ENV': '"production"',
+        global: 'window',
+      },
     })
     .then((result) => {
       return {
